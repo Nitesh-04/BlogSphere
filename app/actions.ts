@@ -1,9 +1,17 @@
 "use server"
 
 import prisma from "@/lib/db";
-import { title } from "process";
 
-export default async function createForm(formdata : FormData)
+
+export async function fetchBlog(id:string)
+{
+    return await prisma.blog.findUnique({
+        where: {id},
+    });
+}
+
+
+export async function createBlog(formdata : FormData)
 {   
     await prisma.blog.create({
         data: {
@@ -14,12 +22,6 @@ export default async function createForm(formdata : FormData)
     
 }
 
-export async function fetchBlog(id:string)
-{
-    return await prisma.blog.findUnique({
-        where: {id},
-    });
-}
 
 export async function updateBlog(id:string, formdata:FormData)
 {
@@ -29,5 +31,12 @@ export async function updateBlog(id:string, formdata:FormData)
             title: formdata.get("title") as string,
             content: formdata.get("content") as string
         }
+    });
+}
+
+export async function deleteBlog(id:string)
+{
+    await prisma.blog.delete({
+        where: {id}
     });
 }

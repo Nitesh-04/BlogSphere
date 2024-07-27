@@ -1,34 +1,24 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useRef,FormEvent,    useState } from "react";
+
+import { useEffect, useRef,FormEvent,useState } from "react";
 import { fetchBlog, updateBlog } from "@/app/actions";
-
-interface Params {
-    id: string;
-}
-
-interface PageProps {
-    params: Params;
-}
+import { useRouter } from "next/navigation";
 
 
-export default function editBlog({ params }: PageProps)
+export default function editBlog({ params }: { params: { id: string } })
 {   
     const formRef = useRef<HTMLFormElement>(null);
-    const [blog,setBlog] = useState({title:"",content:""});
     const router = useRouter();
+    const [blog,setBlog] = useState({title:"",content:""});
     const {id} = params;
 
     useEffect(() => {
         async function fetchingBlog()
         {
-            if(id)
-            {
-                const blogData = await fetchBlog(id);
-                if(blogData)
-                setBlog(blogData);
-            }
+            const blogData = await fetchBlog(id);
+            if(blogData)
+            setBlog(blogData);
         }
 
         fetchingBlog();
@@ -40,7 +30,11 @@ export default function editBlog({ params }: PageProps)
         if (formRef.current) {
             const formData = new FormData(formRef.current);
             await updateBlog(id as string, formData);
-            router.push(`/blogs`);
+            formRef.current.reset();
+            setTimeout(() => {
+                router.push("/blogs");
+                router.refresh();
+            }, 2000);
         }
     };
 
