@@ -2,32 +2,47 @@
 
 import { useRef, FormEvent } from "react";
 import { createBlog } from "../../actions";
-import { useRouter } from "next/navigation";
+import { redirect} from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
+import Header from "@/components/Hub"; 
+import { useUser } from "@clerk/nextjs";
 
 export default function CreatePage() {
   const formRef = useRef<HTMLFormElement>(null);
-  const router = useRouter();
+  
   const { toast } = useToast();
+
+  const { user } = useUser();
+
+  if(!user || !user.id)
+  {
+    redirect("/sign-in");
+  }
+
 
   async function handleSubmit(event: FormEvent) {
     try {
       event.preventDefault();
+
+      if(!user || !user.id) 
+      {   
+          redirect("/sign-in");
+      }
 
       toast({
         title: "Blog created successfully !",
         description: "redirecting to blogs....",
       });
 
+
       if (formRef.current) {
         const formData = new FormData(formRef.current);
-        await createBlog(formData);
+        await createBlog(formData );
         formRef.current.reset();
 
         setTimeout(() => {
-          router.push("/blogs");
-          router.refresh();
+          redirect("/blogs");
         }, 2000);
       }
     } catch (error) {
@@ -40,6 +55,8 @@ export default function CreatePage() {
   }
 
   return (
+    <>
+    <Header/>
     <div>
       <h1 className="text-2xl text-center mt-5">Create a new blog</h1>
       <form
@@ -66,5 +83,6 @@ export default function CreatePage() {
         </Button>
       </form>
     </div>
+    </>
   );
 }

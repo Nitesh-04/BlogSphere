@@ -11,12 +11,13 @@ export async function fetchBlog(id:string)
 }
 
 
-export async function createBlog(formdata : FormData)
+export async function createBlog(formdata : FormData,)
 {   
     await prisma.blog.create({
         data: {
             title: formdata.get("title") as string,
-            content: formdata.get("content") as string
+            content: formdata.get("content") as string,
+            //authorId: userId,
         }
     });
     
@@ -29,7 +30,8 @@ export async function updateBlog(id:string, formdata:FormData)
         where: {id},
         data: {
             title: formdata.get("title") as string,
-            content: formdata.get("content") as string
+            content: formdata.get("content") as string,
+            //authorId: userId,
         }
     });
 }
