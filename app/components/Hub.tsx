@@ -13,7 +13,7 @@ export type IconProps = React.HTMLAttributes<SVGElement>;
 export default function Hub() {
   
   return (
-    <div className="fixed bottom-0 left-0 right-0 flex justify-centern mb-10">
+    <div className="fixed bottom-0 left-0 right-0 flex justify-centern mb-5">
       <TooltipProvider>
         <Dock direction="middle">
           <DockIcon>
