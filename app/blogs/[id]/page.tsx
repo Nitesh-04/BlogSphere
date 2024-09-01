@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import Hub from "@/app/components/Hub";
-import { redirect } from "next/navigation";
+import { redirect,useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 
 export default function Page({ params }: { params: { id: string } }) {
@@ -16,7 +16,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const { id } = params;
   const { toast } = useToast();
-
+  const router = useRouter();
   const { user } = useUser();
 
   if (!user || !user.id) {
@@ -37,14 +37,14 @@ export default function Page({ params }: { params: { id: string } }) {
 
   async function handleDelete() {
     try {
+      await deleteBlog(id);
       toast({
         variant: "destructive",
         title: "Deleted blog successfully",
         description: "redirecting to blogs page....",
       });
-      await deleteBlog(id);
       setTimeout(() => {
-        redirect("/blogs");
+        router.push("/blogs");
       }, 2000);
     } catch (error) {
       toast({

@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
   }
 
   const { id, email_addresses, first_name, last_name } = evt.data;
-  const email = email_addresses[0]?.email_address;
+  const email = email_addresses[0].email_address;
   const name = [first_name, last_name].filter(Boolean).join(" ") || null;
 
   try {

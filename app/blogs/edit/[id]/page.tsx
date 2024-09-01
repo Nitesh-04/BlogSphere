@@ -4,7 +4,7 @@ import { useEffect, useRef, FormEvent, useState } from "react";
 import { fetchBlog, updateBlog } from "@/app/actions";
 import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
+import { redirect,useRouter } from "next/navigation";
 import Hub from "@/app/components/Hub";
 
 export default function editBlog({ params }: { params: { id: string } }) {
@@ -14,6 +14,7 @@ export default function editBlog({ params }: { params: { id: string } }) {
   const { id } = params;
 
   const {user} = useUser();
+  const router = useRouter();
 
   if(!user || !user.id)
   {
@@ -43,7 +44,7 @@ export default function editBlog({ params }: { params: { id: string } }) {
         await updateBlog(id as string, formData, user.id as string);
         formRef.current.reset();
         setTimeout(() => {
-          redirect("/blogs");
+          router.push("/blogs");
         }, 2000);
       }
     } catch (error) {

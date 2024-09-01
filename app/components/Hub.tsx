@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { HomeIcon, PencilIcon, UserIcon, LogOutIcon, SunIcon, MoonIcon } from "lucide-react";
-
+import { HomeIcon, PencilIcon,LogOutIcon, SunIcon, MoonIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -20,7 +19,7 @@ export default function Hub() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
-                  href="/   "
+                  href="/"
                   className={cn(
                     buttonVariants({ variant: "ghost", size: "icon"}),
                     "size-12 rounded-full"
@@ -84,6 +83,18 @@ export default function Hub() {
               </TooltipContent>
             </Tooltip>
           </DockIcon>
+          
+          <DockIcon>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                  <SignOutButton><LogOutIcon className="text-gray-600 size-5"/></SignOutButton>
+              </TooltipTrigger>
+              <TooltipContent className="mb-4">
+                <p>Sign Out</p>
+              </TooltipContent>
+            </Tooltip>
+          </DockIcon>
+
 
         </Dock>
       </TooltipProvider>
