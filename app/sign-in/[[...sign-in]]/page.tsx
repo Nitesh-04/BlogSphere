@@ -7,7 +7,7 @@ export default function Page() {
         className="absolute inset-0 bg-cover bg-center opacity-10 z-0 pointer-events-none"
         style={{ backgroundImage: `url("/doodle.svg")` }}
       ></div>
-      <div className="flex items-center justify-center mx-auto py-14"><SignIn/></div>
+      <div className="w-1/2 flex items-center justify-center mx-auto py-14"><SignIn/></div>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { createBlog } from "../../actions";
 import { redirect} from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import Header from "@/components/Hub"; 
+import Hub from "@/app/components/Hub"; 
 import { useUser } from "@clerk/nextjs";
 
 export default function CreatePage() {
@@ -30,20 +30,17 @@ export default function CreatePage() {
           redirect("/sign-in");
       }
 
-      toast({
-        title: "Blog created successfully !",
-        description: "redirecting to blogs....",
-      });
-
-
       if (formRef.current) {
         const formData = new FormData(formRef.current);
-        await createBlog(formData );
+        await createBlog(formData,user.id as string);
         formRef.current.reset();
-
+        toast({
+          title: "Blog created successfully !",
+          description: "redirecting to blogs....",
+        });
         setTimeout(() => {
           redirect("/blogs");
-        }, 2000);
+        }, 1000);
       }
     } catch (error) {
       toast({
@@ -56,7 +53,7 @@ export default function CreatePage() {
 
   return (
     <>
-    <Header/>
+    <Hub/>
     <div>
       <h1 className="text-2xl text-center mt-5">Create a new blog</h1>
       <form

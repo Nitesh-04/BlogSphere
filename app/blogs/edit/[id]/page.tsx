@@ -5,6 +5,7 @@ import { fetchBlog, updateBlog } from "@/app/actions";
 import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import Hub from "@/app/components/Hub";
 
 export default function editBlog({ params }: { params: { id: string } }) {
   const { toast } = useToast();
@@ -39,7 +40,7 @@ export default function editBlog({ params }: { params: { id: string } }) {
 
       if (formRef.current) {
         const formData = new FormData(formRef.current);
-        await updateBlog(id as string, formData);
+        await updateBlog(id as string, formData, user.id as string);
         formRef.current.reset();
         setTimeout(() => {
           redirect("/blogs");
@@ -56,6 +57,7 @@ export default function editBlog({ params }: { params: { id: string } }) {
 
   return (
     <div>
+      <Hub/>
       <h1 className="text-2xl text-center mt-16">Edit Blog</h1>
       <form
         ref={formRef}

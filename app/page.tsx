@@ -2,11 +2,19 @@ import Link from "next/link";
 import { Kanit } from "next/font/google";
 import { Chivo } from "next/font/google";
 import { Button } from "@/components/ui/button";
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 const kanit = Kanit({ weight: "600", subsets: ["latin"] });
 const chivo = Chivo({ weight: "700", subsets: ["latin"] });
 
-export default function Home() {
+export default async function Home() {
+
+  const user = await currentUser();
+  if(user)
+  {
+      redirect("/blogs");
+  }
   return (
     <div className="relative h-screen w-full">
       <div

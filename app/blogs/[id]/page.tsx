@@ -4,7 +4,7 @@ import { deleteBlog, fetchBlog } from "@/app/actions";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import Header from "@/components/Hub";
+import Hub from "@/app/components/Hub";
 import { redirect } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 
@@ -57,7 +57,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <>
-    <Header/>
+    <Hub/>
     <div className="relative flex flex-col justify-center items-center w-3/4 mx-auto pt-24">
       <h1 className="text-4xl font-bold text-center">{blog?.title}</h1>
       <p className="flex justify-center items-center text-lg pt-10 w-2/3 text-justify">
