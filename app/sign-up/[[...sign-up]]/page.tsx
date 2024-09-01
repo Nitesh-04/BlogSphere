@@ -2,10 +2,12 @@ import { SignUp } from "@clerk/nextjs";
 
 export default function Page() {
   return(
-    <div className="flex flex-col items-center justify-center gap-4">
-      <div>
-      </div>
-        <SignUp/>
+    <div className="relative h-screen w-full">
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-10 z-0 pointer-events-none"
+        style={{ backgroundImage: `url("/doodle.svg")` }}
+      ></div>
+      <div className="flex items-center justify-center mx-auto py-4"><SignUp/></div>
     </div>
   );
 }
