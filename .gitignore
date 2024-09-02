@@ -37,6 +37,6 @@ yarn-error.log*
 next-env.d.ts
 
 # Add dev.db to .gitignore
-dev.db
+prisma/dev.db
 
 prisma/migrations/
