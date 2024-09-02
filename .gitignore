@@ -38,3 +38,5 @@ next-env.d.ts
 
 # Add dev.db to .gitignore
 dev.db
+
+prisma/migrations/
