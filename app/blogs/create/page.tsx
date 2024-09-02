@@ -3,7 +3,7 @@
 import { useRef, FormEvent } from "react";
 import { createBlog } from "../../actions";
 import { useRouter } from "next/navigation";
-import { uToast } from "@/components/ui/use-toast";
+import { TheToaster } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import Hub from "@/app/components/Hub"; 
 import { useUser } from "@clerk/nextjs";
@@ -11,7 +11,7 @@ import { useUser } from "@clerk/nextjs";
 export default function CreatePage() {
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
-  const { toast } = uToast();
+  const { toast } = TheToaster();
   const { user } = useUser();
 
   if (!user || !user.id) {
