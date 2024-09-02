@@ -3,7 +3,7 @@
 import { deleteBlog, fetchBlog } from "@/app/actions";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Toast } from "@/components/ui/use-toast";
+import { uToast } from "@/components/ui/use-toast";
 import Hub from "@/app/components/Hub";
 import { redirect,useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
@@ -15,7 +15,7 @@ export default function Page({ params }: { params: { id: string } }) {
   });
 
   const { id } = params;
-  const { toast } = Toast();
+  const { toast } = uToast();
   const router = useRouter();
   const { user } = useUser();
 

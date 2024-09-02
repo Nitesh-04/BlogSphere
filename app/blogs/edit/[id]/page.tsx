@@ -2,13 +2,13 @@
 
 import { useEffect, useRef, FormEvent, useState } from "react";
 import { fetchBlog, updateBlog } from "@/app/actions";
-import { Toast } from "@/components/ui/use-toast";
+import { uToast } from "@/components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
 import { redirect,useRouter } from "next/navigation";
 import Hub from "@/app/components/Hub";
 
 export default function EditBlog({ params }: { params: { id: string } }) {
-  const { toast } = Toast();
+  const { toast } = uToast();
   const formRef = useRef<HTMLFormElement>(null);
   const [blog, setBlog] = useState({ title: "", content: "" });
   const { id } = params;

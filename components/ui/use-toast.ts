@@ -169,7 +169,7 @@ function toast({ ...props }: Toast) {
   }
 }
 
-function Toast() {
+function uToast() {
   const [state, setState] = React.useState<State>(memoryState)
 
   React.useEffect(() => {
@@ -189,4 +189,4 @@ function Toast() {
   }
 }
 
-export { Toast, toast }
+export { uToast, toast }
