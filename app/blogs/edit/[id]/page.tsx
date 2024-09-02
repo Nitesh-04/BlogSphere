@@ -6,6 +6,10 @@ import { TheToaster } from "@/components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
 import { redirect,useRouter } from "next/navigation";
 import Hub from "@/app/components/Hub";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function EditBlog({ params }: { params: { id: string } }) {
   const { toast } = TheToaster();
@@ -59,32 +63,42 @@ export default function EditBlog({ params }: { params: { id: string } }) {
   return (
     <div>
       <Hub/>
-      <h1 className="text-2xl text-center mt-16">Edit Blog</h1>
-      <form
-        ref={formRef}
-        onSubmit={handleSubmit}
-        className="flex flex-col mt-5 py-5 gap-5 border-2 border-black rounded-md w-1/2 mx-auto"
-      >
-        <input
-          type="text"
-          name="title"
-          placeholder="Title"
-          required
-          className="text-black border-black border-2 rounded-md w-1/2 mx-auto mt-5 p-2"
-          defaultValue={blog.title}
-        />
-        <textarea
-          rows={10}
-          name="content"
-          required
-          placeholder="Content"
-          className="text-black border-black border-2 rounded-md w-2/3 mx-auto p-2"
-          defaultValue={blog.content}
-        />
-        <button type="submit" className="bg-black text-white w-1/2 mx-auto p-2">
-          Submit
-        </button>
-      </form>
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-10 z-[-1] pointer-events-none"
+        style={{ backgroundImage: `url("/doodle.svg")` }}
+      ></div>
+      <div className="w-full max-w-2xl mx-auto py-8 px-4 md:px-6 z-10">
+        <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
+          <div>
+            <Input
+              type="text"
+              name="title"
+              required
+              placeholder="Enter blog post title"
+              defaultValue={blog.title}
+              className="text-3xl text-center bg-gray-50 font-bold border-black h-10 tracking-tight"
+            />
+          </div>
+          <div>
+            <Textarea
+              name="content"
+              required
+              placeholder="Get that blog cooking ....."
+              rows={11}
+              className="text-lg bg-gray-50 border-black leading-relaxed"
+              defaultValue={blog.content}
+            />
+          </div>
+          <div className="flex justify-between">
+            <Button type="button" className="px-6">
+              <Link href={"/blogs"}>Cancel</Link>
+            </Button>
+            <Button type="submit" className="px-6">
+              Edit Blog
+            </Button>
+          </div>
+        </form>
+      </div>  
     </div>
   );
 }

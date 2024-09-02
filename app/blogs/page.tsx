@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Hub from "../components/Hub";
 import NumberTicker from "@/components/magicui/number-ticker";
 import Link from "next/link";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 
 interface Blog {
   id: string;
@@ -12,6 +13,11 @@ interface Blog {
   content: string;
   createdAt: Date;
   authorId: string;
+}
+
+function truncateText(text: string, maxLength: number) {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength) + '...';
 }
 
 export default function Blogs() {
@@ -29,7 +35,6 @@ export default function Blogs() {
       }
 
       try {
-        console.log(user.id);
         const response = await fetch(`/api/blogs?userId=${user.id}`);
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
@@ -44,20 +49,73 @@ export default function Blogs() {
   }, [user, isLoaded, router]);
 
   return (
-    <div className="h-screen w-full">
+    <div className="relative h-screen w-full">
       <Hub />
-      <div className="flex flex-col justify-center items-center w-1/2 mx-auto pt-24">
-        <h1 className="text-4xl font-bold text-center">
-          Blogs (<NumberTicker value={count} />)
-        </h1>
-        <ul className="flex flex-col items-center justify-center pt-10 mt">
-          {blogs.map((blog) => (
-            <li key={blog.id} className="text-lg mt-5">
-              <Link href={`/blogs/${blog.id}`}>{blog.title}</Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-10 z-[-1] pointer-events-none"
+        style={{ backgroundImage: `url("/doodle.svg")` }}
+      ></div>
+      <section className="w-full py-10 z-10">
+        <div className="container px-4 md:px-6">
+          <div className="flex flex-col items-center justify-center space-y-6">
+            <div className="space-y-2 text-center mb-12 md:mb-24">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-2xl md:text-4xl">Your Blogs (<NumberTicker value={count}></NumberTicker>)</h2> 
+            </div>
+            <Carousel className="w-full max-w-2xl border-slate-900 border-[1px] rounded-lg">
+              <CarouselContent>
+                {blogs.map((blog) => (
+                  <CarouselItem key={blog.id}>
+                    <div className="group relative h-full w-full bg-muted/20 rounded-lg shadow-md p-6 transition-all duration-300 hover:bg-muted/30">
+                      <div className="flex flex-col h-full justify-between">
+                        <div>
+                          <h3 className="text-2xl font-bold text-foreground">{blog.title}</h3>
+                          <p className="text-muted-foreground mt-2">{truncateText(blog.content, 250)}</p>
+                        </div>
+                        <Link
+                          href={`/blogs/${blog.id}`}
+                          className="inline-flex items-center gap-2 mt-4 text-sm font-medium text-primary hover:underline"
+                          prefetch={false}
+                        >
+                          Read More
+                          <ArrowRightIcon className="h-4 w-4" />
+                        </Link>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden md:block"/>
+              <CarouselNext className="hidden md:block"/>
+            </Carousel>
+          </div>
+        </div>
+      </section>
     </div>
+  );
+}
+
+interface ArrowRightIconProps {
+  className?: string;
+  width?: number;
+  height?: number;
+}
+
+function ArrowRightIcon(props: ArrowRightIconProps) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width={props.width || 24}
+      height={props.height || 24}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5 12h14" />
+      <path d="m12 5 7 7-7 7" />
+    </svg>
   );
 }

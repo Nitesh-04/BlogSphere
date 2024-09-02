@@ -5,8 +5,10 @@ import { createBlog } from "../../actions";
 import { useRouter } from "next/navigation";
 import { TheToaster } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import Hub from "@/app/components/Hub"; 
+import Hub from "@/app/components/Hub";
 import { useUser } from "@clerk/nextjs";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function CreatePage() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -48,34 +50,39 @@ export default function CreatePage() {
   }
 
   return (
-    <>
-      <Hub />
-      <div>
-        <h1 className="text-2xl text-center mt-5">Create a new blog</h1>
-        <form
-          ref={formRef}
-          onSubmit={handleSubmit}
-          className="flex flex-col mt-5 py-5 gap-5 border-2 border-gray- rounded-md w-1/2 mx-auto"
-        >
-          <input
-            type="text"
-            name="title"
-            placeholder="Title"
-            required
-            className="text-black border-black border-2 rounded-md w-1/2 mx-auto mt-5 p-2"
-          />
-          <textarea
-            rows={10}
-            name="content"
-            required
-            placeholder="Content"
-            className="text-black border-black border-2 rounded-md w-3/4 mx-auto p-2"
-          />
-          <Button type="submit" className="bg-black text-white w-1/2 mx-auto p-2">
-            Submit
-          </Button>
+    <div className="relative h-screen w-full">
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-10 z-[-1] pointer-events-none"
+        style={{ backgroundImage: `url("/doodle.svg")` }}
+      ></div>
+      <Hub/>
+      <div className="w-full max-w-2xl mx-auto py-8 px-4 md:px-6 z-10">
+        <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
+          <div>
+            <Input
+              type="text"
+              name="title"
+              required
+              placeholder="Enter blog post title"
+              className="text-3xl text-center bg-gray-50 font-bold border-black h-10 tracking-tight"
+            />
+          </div>
+          <div>
+            <Textarea
+              name="content"
+              required
+              placeholder="Get that blog cooking ....."
+              rows={11}
+              className="text-lg bg-gray-50 border-black leading-relaxed"
+            />
+          </div>
+          <div className="flex justify-center md:justify-end">
+            <Button type="submit" className="px-6">
+              Create Blog
+            </Button>
+          </div>
         </form>
-      </div>
-    </>
+      </div>  
+    </div>
   );
 }
