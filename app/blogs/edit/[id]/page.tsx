@@ -7,7 +7,7 @@ import { useUser } from "@clerk/nextjs";
 import { redirect,useRouter } from "next/navigation";
 import Hub from "@/app/components/Hub";
 
-export default function editBlog({ params }: { params: { id: string } }) {
+export default function EditBlog({ params }: { params: { id: string } }) {
   const { toast } = Toast();
   const formRef = useRef<HTMLFormElement>(null);
   const [blog, setBlog] = useState({ title: "", content: "" });
