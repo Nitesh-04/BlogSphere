@@ -19,7 +19,6 @@ export async function POST(req: NextRequest) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
-    console.error("WEBHOOK_SECRET not set");
     return new NextResponse("WEBHOOK_SECRET not set", { status: 500 });
   }
 
@@ -28,7 +27,6 @@ export async function POST(req: NextRequest) {
   const svix_signature = req.headers.get("svix-signature");
 
   if (!svix_id || !svix_timestamp || !svix_signature) {
-    console.error("Missing svix headers");
     return new NextResponse("Missing svix headers", { status: 400 });
   }
 
@@ -46,7 +44,6 @@ export async function POST(req: NextRequest) {
       "svix-signature": svix_signature,
     }) as WebhookEvent;
   } catch (err) {
-    console.error("Error verifying webhook:", err);
     return new NextResponse("Webhook verification failed", { status: 400 });
   }
 
@@ -57,7 +54,6 @@ export async function POST(req: NextRequest) {
   try {
     if (evt.type === "user.created" || evt.type === "user.updated") {
       if (!email) {
-        console.error("Error: No email found");
         return new NextResponse("Error: No email found", { status: 400 });
       }
 
@@ -87,19 +83,23 @@ export async function POST(req: NextRequest) {
     }
 
     if (evt.type === "user.deleted") {
-      console.log("Processing user deletion for ID:", id);
-
-      await prisma.user.delete({
-        where: { id: id as string },
-      });
-
-      console.log("User deleted from database:", id);
-      return new NextResponse("User deleted", { status: 200 });
+      try {
+        await prisma.blog.deleteMany({
+          where: { authorId: id as string },
+        });
+        await prisma.user.delete({
+          where: { id: id as string },
+        });
+        return new NextResponse("User deleted", { status: 200 });
+        
+      } catch (error) {
+        return new NextResponse("Error deleting user and blogs", { status: 500 });
+      }
     }
 
     return new NextResponse("Webhook event type not handled", { status: 200 });
   } catch (err) {
-    console.error("Error processing webhook event:", err);
+
     return new NextResponse("Error processing webhook event", { status: 500 });
   }
 }
