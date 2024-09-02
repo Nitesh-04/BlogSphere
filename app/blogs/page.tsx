@@ -31,7 +31,7 @@ export default function Blogs() {
       try {
         console.log(user.id);
         const response = await fetch(`/api/blogs?userId=${user.id}`);
-        if (!response.ok) throw new Error('Network response was not ok');
+        if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         setBlogs(data.blogs);
         setCount(data.count);

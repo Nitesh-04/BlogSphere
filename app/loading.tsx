@@ -9,7 +9,7 @@ export default function Loading() {
       "Gathering all the juicy details for you.",
       "Organizing your feed for an awesome experience.",
       "Working on fetching new and exciting content.",
-      "Hang tight, we're getting your blog posts ready.",
+      "Hang tight, were getting your blog posts ready.",
       "Crafting a personalized experience for you.",
       "Spicing things up with the latest updates.",
       "Loading your favorite reads just for you.",
