@@ -19,7 +19,6 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const [loading, setLoading] = useState(false);
   const [pageLoading, setpageLoading] = useState(false);
-
   const { id } = params;
   const { toast } = TheToaster();
   const router = useRouter();
