@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, FormEvent } from "react";
+import { useRef, FormEvent, Suspense, useState } from "react";
 import { createBlog } from "../../actions";
 import { useRouter } from "next/navigation";
 import { TheToaster } from "@/components/ui/use-toast";
@@ -9,12 +9,14 @@ import Hub from "@/app/components/Hub";
 import { useUser } from "@clerk/nextjs";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import Loading from "@/app/loading";
 
 export default function CreatePage() {
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
   const { toast } = TheToaster();
   const { user } = useUser();
+  const [loading, setLoading] = useState(false);
 
   if (!user || !user.id) {
     router.push("/sign-in");
@@ -31,6 +33,7 @@ export default function CreatePage() {
 
       if (formRef.current) {
         const formData = new FormData(formRef.current);
+        setLoading(true);
         await createBlog(formData, user.id as string);
         toast({
           title: "Blog created successfully!",
@@ -77,12 +80,13 @@ export default function CreatePage() {
             />
           </div>
           <div className="flex justify-center md:justify-end">
-            <Button type="submit" className="px-6">
-              Create Blog
+            <Button type="submit" className="text-white px-6 z-2" disabled={loading}>
+              {loading ? "working on it ...." :  "Create Blog"}
             </Button>
+            
           </div>
         </form>
-      </div>  
+      </div>
     </div>
   );
 }

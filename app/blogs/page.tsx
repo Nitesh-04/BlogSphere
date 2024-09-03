@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import Hub from "../components/Hub";
-import NumberTicker from "@/components/magicui/number-ticker";
 import Link from "next/link";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
+import Loading from "../loading";
 
 interface Blog {
   id: string;
@@ -25,6 +25,7 @@ export default function Blogs() {
   const [count, setCount] = useState<number>(0);
   const { user, isLoaded } = useUser();
   const router = useRouter();
+  const [loading,setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -35,6 +36,7 @@ export default function Blogs() {
       }
 
       try {
+        setLoading(true);
         const response = await fetch(`/api/blogs?userId=${user.id}`);
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
@@ -43,10 +45,19 @@ export default function Blogs() {
       } catch (error) {
         console.error("Error fetching blogs:", error);
       }
+      finally
+      {
+        setLoading(false);
+      }
     }
 
     fetchData();
   }, [user, isLoaded, router]);
+
+  if(loading)
+  {
+    return <Loading/>
+  }
 
   return (
     <div className="relative h-screen w-full">
@@ -59,8 +70,19 @@ export default function Blogs() {
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-6">
             <div className="space-y-2 text-center mb-12 md:mb-24">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-2xl md:text-4xl">Your Blogs (<NumberTicker value={count}></NumberTicker>)</h2> 
+              {count===0 ? <></> :
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-2xl md:text-4xl">Hello,  {user?.firstName}</h2> }
             </div>
+            {count === 0 ? (
+              <div className="text-center">
+                <p className="text-4xl font-bold text-primary">
+                  <Link href={"/"} className="text-5xl md:text-6xl mt-20">BlogSphere</Link>{""}
+                </p>
+                <Link href="/blogs/create" className="text-black text-sm mt-32 hover:underline">
+                    <p className="mt-6 text-[14px]">Click here to create your first blog!</p>
+                  </Link>
+              </div>
+            ) : (
             <Carousel className="w-full max-w-2xl border-slate-900 border-[1px] rounded-lg">
               <CarouselContent>
                 {blogs.map((blog) => (
@@ -87,6 +109,7 @@ export default function Blogs() {
               <CarouselPrevious className="hidden md:block"/>
               <CarouselNext className="hidden md:block"/>
             </Carousel>
+            )}
           </div>
         </div>
       </section>

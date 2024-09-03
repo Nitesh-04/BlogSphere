@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, FormEvent, useState } from "react";
+import { useEffect, useRef, FormEvent, useState, Suspense } from "react";
 import { fetchBlog, updateBlog } from "@/app/actions";
 import { TheToaster } from "@/components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
@@ -10,12 +10,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Loading from "@/app/loading";
 
 export default function EditBlog({ params }: { params: { id: string } }) {
   const { toast } = TheToaster();
   const formRef = useRef<HTMLFormElement>(null);
   const [blog, setBlog] = useState({ title: "", content: "" });
+  const [loading,setLoading] = useState(false);
   const { id } = params;
+  const [pageLoading,setpageLoading] = useState(false);
 
   const {user} = useUser();
   const router = useRouter();
@@ -27,31 +30,45 @@ export default function EditBlog({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     async function fetchingBlog() {
-      const blogData = await fetchBlog(id);
-      if (blogData) setBlog(blogData);
+      try {
+        setpageLoading(true);
+        const blogData = await fetchBlog(id);
+        if (blogData) setBlog(blogData);
+      } catch (error) {
+        console.error("Error fetching blog:", error);
+      }
+      finally{
+        setpageLoading(false);
+      }
+     
     }
-
     fetchingBlog();
   }, [id]);
+
+  if(pageLoading)
+  {
+    return <Loading/>
+  }
 
   const handleSubmit = async (event: FormEvent) => {
     try {
       event.preventDefault();
 
-      toast({
-        title: "Blog edited successfully !",
-        description: "redirecting to blogs....",
-      });
-
       if (formRef.current) {
         const formData = new FormData(formRef.current);
+        setLoading(true);
         await updateBlog(id as string, formData, user.id as string);
+        toast({
+          title: "Blog edited successfully !",
+          description: "redirecting to blogs....",
+        });
         formRef.current.reset();
         setTimeout(() => {
           router.push("/blogs");
         }, 2000);
       }
     } catch (error) {
+      setLoading(false);
       toast({
         variant: "destructive",
         title: "Error editing blog",
@@ -93,12 +110,12 @@ export default function EditBlog({ params }: { params: { id: string } }) {
             <Button type="button" className="px-6">
               <Link href={"/blogs"}>Cancel</Link>
             </Button>
-            <Button type="submit" className="px-6">
-              Edit Blog
+            <Button type="submit" className="px-6" disabled={loading}>
+              {loading ? "editing blog ...." :  "Edit Blog"}
             </Button>
           </div>
         </form>
-      </div>  
+      </div>
     </div>
   );
 }

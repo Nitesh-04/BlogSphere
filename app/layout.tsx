@@ -7,8 +7,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "blogSphere",
-  description: "ur mini blog platform",
+  title: "BlogSphere",
+  description: "your mini blog platform",
 };
 
 export default function RootLayout({
