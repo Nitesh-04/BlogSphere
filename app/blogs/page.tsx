@@ -69,47 +69,46 @@ export default function Blogs() {
       <section className="w-full py-10 z-10">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-6">
-            {blogs.length > 0 ? (
-              <>
-                <div className="space-y-2 text-center mb-12 md:mb-24">
-                  <h2 className="text-3xl font-bold tracking-tighter sm:text-2xl md:text-4xl">Hello, {user?.firstName}</h2>
-                </div>
-                <Carousel className="w-full max-w-2xl border-slate-900 border-[1px] rounded-lg">
-                  <CarouselContent>
-                    {blogs.map((blog) => (
-                      <CarouselItem key={blog.id}>
-                        <div className="group relative h-full w-full bg-muted/20 rounded-lg shadow-md p-6 transition-all duration-300 hover:bg-muted/30">
-                          <div className="flex flex-col h-full justify-between">
-                            <div>
-                              <h3 className="text-2xl font-bold text-foreground">{blog.title}</h3>
-                              <p className="text-muted-foreground mt-2">{truncateText(blog.content, 250)}</p>
-                            </div>
-                            <Link
-                              href={`/blogs/${blog.id}`}
-                              className="inline-flex items-center gap-2 mt-4 text-sm font-medium text-primary hover:underline"
-                              prefetch={false}
-                            >
-                              Read More
-                              <ArrowRightIcon className="h-4 w-4" />
-                            </Link>
-                          </div>
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="hidden md:block"/>
-                  <CarouselNext className="hidden md:block"/>
-                </Carousel>
-              </>
-            ) : (
+            <div className="space-y-2 text-center mb-12 md:mb-24">
+              {count===0 ? <></> :
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-2xl md:text-4xl">Hello,  {user?.firstName}</h2> }
+            </div>
+            {count === 0 ? (
               <div className="text-center">
                 <p className="text-4xl font-bold text-primary">
-                  <Link href={"/"} className="text-5xl md:text-6xl mt-20">BlogSphere</Link>
+                  <Link href={"/"} className="text-5xl md:text-6xl mt-20">BlogSphere</Link>{""}
                 </p>
                 <Link href="/blogs/create" className="text-black text-sm mt-32 hover:underline">
-                  <p className="mt-6 text-[14px]">Click here to create your first blog!</p>
-                </Link>
+                    <p className="mt-6 text-[14px]">Click here to create your first blog!</p>
+                  </Link>
               </div>
+            ) : (
+            <Carousel className="w-full max-w-2xl border-slate-900 border-[1px] rounded-lg">
+              <CarouselContent>
+                {blogs.map((blog) => (
+                  <CarouselItem key={blog.id}>
+                    <div className="group relative h-full w-full bg-muted/20 rounded-lg shadow-md p-6 transition-all duration-300 hover:bg-muted/30">
+                      <div className="flex flex-col h-full justify-between">
+                        <div>
+                          <h3 className="text-2xl font-bold text-foreground">{blog.title}</h3>
+                          <p className="text-muted-foreground mt-2">{truncateText(blog.content, 250)}</p>
+                        </div>
+                        <Link
+                          href={`/blogs/${blog.id}`}
+                          className="inline-flex items-center gap-2 mt-4 text-sm font-medium text-primary hover:underline"
+                          prefetch={false}
+                        >
+                          Read More
+                          <ArrowRightIcon className="h-4 w-4" />
+                        </Link>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden md:block"/>
+              <CarouselNext className="hidden md:block"/>
+            </Carousel>
             )}
           </div>
         </div>
