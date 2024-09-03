@@ -29,7 +29,7 @@ export default function Blogs() {
 
   useEffect(() => {
     async function fetchData() {
-      if (!isLoaded) return;
+      
       if (!user) {
         router.push("/sign-in");
         return;
