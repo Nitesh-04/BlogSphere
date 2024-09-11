@@ -56,26 +56,6 @@ export default function Hub() {
           <DockIcon>
             <Tooltip>
               <TooltipTrigger asChild>
-                <button
-                  //onClick={toggleDarkMode}
-                  className={cn(
-                    buttonVariants({ variant: "ghost", size: "icon" }),
-                    "size-12 rounded-full"
-                  )}
-                >
-                <SunIcon className="size-4" />
-                <MoonIcon className="size-4" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Toggle Theme</p>
-              </TooltipContent>
-            </Tooltip>
-          </DockIcon>
-
-          <DockIcon>
-            <Tooltip>
-              <TooltipTrigger asChild>
                   <UserButton/>
               </TooltipTrigger>
               <TooltipContent>
