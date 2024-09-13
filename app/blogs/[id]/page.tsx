@@ -10,6 +10,7 @@ import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
 import Loading from "@/app/loading";
+import { revalidatePath } from "next/cache";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [blog, setBlog] = useState<{ title: string; content: string }>({
@@ -58,9 +59,8 @@ async function handleDelete() {
         title: "Deleted blog successfully",
         description: "Redirecting to blogs page...",
       });
-      setTimeout(() => {
-        router.push("/blogs");
-      }, 2000);
+      revalidatePath("/blogs");
+      redirect("/blogs");
     } catch (error) {
       toast({
         variant: "destructive",
