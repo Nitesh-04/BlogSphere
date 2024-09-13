@@ -9,8 +9,7 @@ import Hub from "@/app/components/Hub";
 import { useUser } from "@clerk/nextjs";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import Loading from "@/app/loading";
 
 export default function CreatePage() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -40,8 +39,9 @@ export default function CreatePage() {
           title: "Blog created successfully!",
           description: "Redirecting to blogs...",
         });
-        revalidatePath("/blogs");
-        redirect("/blogs");
+        setTimeout(() => {
+          router.push("/blogs");
+        }, 2000);
       }
     } catch (error) {
       toast({

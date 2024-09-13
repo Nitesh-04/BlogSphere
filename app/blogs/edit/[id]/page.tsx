@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Loading from "@/app/loading";
-import { revalidatePath } from "next/cache";
 
 export default function EditBlog({ params }: { params: { id: string } }) {
   const { toast } = TheToaster();
@@ -64,8 +63,9 @@ export default function EditBlog({ params }: { params: { id: string } }) {
           description: "redirecting to blogs....",
         });
         formRef.current.reset();
-        revalidatePath("/blogs");
-        redirect("/blogs");
+        setTimeout(() => {
+          router.push("/blogs");
+        }, 2000);
       }
     } catch (error) {
       setLoading(false);
