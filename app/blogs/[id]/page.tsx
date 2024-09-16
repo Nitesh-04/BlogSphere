@@ -52,7 +52,15 @@ if(pageLoading)
 async function handleDelete() {
     try {
       setLoading(true);
-      await deleteBlog(id);
+      if (user && user.id) {
+        await deleteBlog(id, user.id as string);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error deleting blog",
+          description: "User not found.",
+        });
+      }
       toast({
         variant: "destructive",
         title: "Deleted blog successfully",
