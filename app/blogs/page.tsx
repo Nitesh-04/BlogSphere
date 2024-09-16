@@ -70,7 +70,8 @@ export default function Blogs() {
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-6">
             <div className="space-y-2 text-center mb-12 md:mb-24">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-2xl md:text-4xl">Hello,  {user?.firstName}</h2>
+              {count===0 ? <></> :
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-2xl md:text-4xl">Hello,  {user?.firstName}</h2> }
             </div>
             {count === 0 ? (
               <div className="text-center">
