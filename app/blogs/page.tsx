@@ -6,6 +6,7 @@ import Hub from "../components/Hub";
 import Link from "next/link";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Loading from "../loading";
+import { fetchBlogs } from "../actions";
 
 interface Blog {
   id: string;
@@ -37,9 +38,7 @@ export default function Blogs() {
 
       try {
         setLoading(true);
-        const response = await fetch(`/api/blogs?userId=${user.id}`);
-        if (!response.ok) throw new Error("Network response was not ok");
-        const data = await response.json();
+        const data = await fetchBlogs(user.id);
         setBlogs(data.blogs);
         setCount(data.count);
       } catch (error) {

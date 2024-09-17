@@ -2,6 +2,19 @@
 
 import prisma from "@/lib/db";
 
+export async function fetchBlogs(userId:string)
+{
+    const blogs = await prisma.blog.findMany({
+        where: {authorId: userId},
+        orderBy: {createdAt: "desc"},
+    });
+
+    const count = await prisma.blog.count({
+        where: {authorId: userId},
+    });
+
+    return {blogs, count};
+}
 
 export async function fetchBlog(id:string)
 {
@@ -9,7 +22,6 @@ export async function fetchBlog(id:string)
         where: {id},
     });
 }
-
 
 export async function createBlog(formdata : FormData,userId : string)
 {   
